@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dev.hash.hashcord.post.mapper.PostMapper">
+
+    <select id="selectPostList" parameterType="HashMap" resultType="CustomMap">
+        SELECT 	 POST_ID
+               , POST_TITLE
+               , POST_CONT
+               , POST_REG_ID
+               , DATE(POST_REG_DT) AS POST_REG_DT
+               , POST_MOD_ID
+               , DATE(POST_MOD_DT) AS POST_MOD_DT
+               , POST_DEL_YN
+          FROM HASH_POST
+         WHERE POST_DEL_YN = 'N'
+    </select>
+
+    <select id="selectPostDetail" parameterType="HashMap" resultType="CustomMap">
+        SELECT 	 POST_ID
+               , POST_TITLE
+               , POST_CONT
+               , POST_REG_ID
+               , DATE(POST_REG_DT) AS POST_REG_DT
+               , POST_MOD_ID
+               , DATE(POST_MOD_DT) AS POST_MOD_DT
+               , POST_DEL_YN
+          FROM HASH_POST
+         WHERE POST_DEL_YN = 'N'
+           AND POST_ID = #{postId}
+    </select>
+
+</mapper>
