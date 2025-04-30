@@ -3,30 +3,41 @@
 <mapper namespace="dev.hash.hashcord.post.mapper.PostMapper">
 
     <select id="selectPostList" parameterType="HashMap" resultType="CustomMap">
-        SELECT 	 POST_ID
-               , POST_TITLE
-               , POST_CONT
-               , POST_REG_ID
-               , DATE(POST_REG_DT) AS POST_REG_DT
-               , POST_MOD_ID
-               , DATE(POST_MOD_DT) AS POST_MOD_DT
-               , POST_DEL_YN
-          FROM HASH_POST
+    	/* dev.hash.hashcord.post.mapper.PostMapper.selectPostList - 게시글 목록조회 */
+        SELECT 	 HP.POST_ID
+               , HP.POST_TITLE
+               , HP.POST_REG_ID
+               , ( SELECT HU.USER_NM FROM HASH_USER HU WHERE HU.USER_ID = HP.POST_REG_ID ) AS POST_REG_NM
+               , DATE(HP.POST_REG_DT) AS POST_REG_DT
+               , HP.POST_MOD_ID
+               , ( SELECT HU.USER_NM FROM HASH_USER HU WHERE HU.USER_ID = HP.POST_MOD_ID ) AS POST_MOD_NM
+               , DATE(HP.POST_MOD_DT) AS POST_MOD_DT
+               , HP.POST_DEL_YN
+          FROM HASH_POST HP
          WHERE POST_DEL_YN = 'N'
+         <if test=" categoryId != null and categoryId != '' ">
+         	AND CATEGORY_ID = #{categoryId}
+         </if>
+         <if test=" postTitle != null and postTitle != '' ">
+         	AND POST_TITLE LIKE CONCAT('%', #{postTitle}, '%')
+         </if>
     </select>
 
     <select id="selectPostDetail" parameterType="HashMap" resultType="CustomMap">
-        SELECT 	 POST_ID
-               , POST_TITLE
-               , POST_CONT
-               , POST_REG_ID
-               , DATE(POST_REG_DT) AS POST_REG_DT
-               , POST_MOD_ID
-               , DATE(POST_MOD_DT) AS POST_MOD_DT
-               , POST_DEL_YN
-          FROM HASH_POST
-         WHERE POST_DEL_YN = 'N'
-           AND POST_ID = #{postId}
+    	/* dev.hash.hashcord.post.mapper.PostMapper.selectPostDetail - 게시글 상세조회 */
+        SELECT 	 HP.POST_ID
+               , HP.POST_TITLE
+               , HP.POST_CONT
+               , HP.POST_REG_ID
+               , ( SELECT HU.USER_NM FROM HASH_USER HU WHERE HU.USER_ID = HP.POST_REG_ID ) AS POST_REG_NM
+               , DATE(HP.POST_REG_DT) AS POST_REG_DT
+               , HP.POST_MOD_ID
+               , ( SELECT HU.USER_NM FROM HASH_USER HU WHERE HU.USER_ID = HP.POST_MOD_ID ) AS POST_MOD_NM
+               , DATE(HP.POST_MOD_DT) AS POST_MOD_DT
+               , HP.POST_DEL_YN
+          FROM HASH_POST HP
+         WHERE HP.POST_DEL_YN = 'N'
+           AND HP.POST_ID = #{postId}
     </select>
 
 </mapper>
