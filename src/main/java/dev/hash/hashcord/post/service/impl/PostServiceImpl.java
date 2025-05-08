@@ -16,7 +16,32 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private PostMapper postMapper;
+    
+    /**
+     * 채널 카테고리 목록조회
+     */
+    @Override
+	public Map<String, Object> selectChanelCategoryList(Map<String, Object> params, Map<String, Object> resultData) {
+    	List<Map<String, Object>> chanelCategoryList = new ArrayList<Map<String, Object>>();
+        String errorCode = "";
+        String errorDetail = "";
 
+        try{
+        	chanelCategoryList = postMapper.selectChanelCategoryList(params);
+        }catch(Exception exception){
+            errorCode = "CHANEL_CATEGORY_LIST_ERROR-001";
+            errorDetail = "채널 카테고리 목록 조회 실패";
+        }
+
+        resultData.put("resultData", chanelCategoryList);
+        resultData.put("errorCode", errorCode);
+        resultData.put("errorDetail", errorDetail);
+        return resultData;
+	}
+
+    /**
+     * 게시글 목록조회
+     */
     @Override
     public Map<String, Object> selectPostList(Map<String, Object> params, Map<String, Object> resultData) {
         List<Map<String, Object>> postList = new ArrayList<Map<String, Object>>();
@@ -36,6 +61,9 @@ public class PostServiceImpl implements PostService {
         return resultData;
     }
 
+    /**
+     * 게시글 상세조회
+     */
     @Override
     public Map<String, Object> selectPostDetail(Map<String, Object> params, Map<String, Object> resultData) {
         Map<String, Object> postDetail = new HashMap<String, Object>();
@@ -54,4 +82,5 @@ public class PostServiceImpl implements PostService {
         resultData.put("errorDetail", errorDetail);
         return resultData;
     }
+
 }

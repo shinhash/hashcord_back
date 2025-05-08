@@ -2,9 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.hash.hashcord.post.mapper.PostMapper">
 
+	<select id="selectChanelCategoryList" parameterType="HashMap" resultType="CustomMap">
+    	/* dev.hash.hashcord.post.mapper.PostMapper.selectChanelCategoryList - 채널 카테고리 목록조회 */
+        SELECT 	 HCH.CHANEL_NM
+               , HCA.CATEGORY_ID
+               , HCA.CATEGORY_NM
+          FROM HASH_CHANEL HCH
+         INNER JOIN HASH_CATEGORY HCA
+        		 ON HCH.CHANEL_ID = HCA.CHANEL_ID
+         WHERE HCH.CHANEL_DEL_YN = 'N'
+         <if test=" chanelId != null and chanelId != '' ">
+         	AND HCH.CHANEL_ID = #{chanelId}
+         </if>
+         <if test=" categoryId != null and categoryId != '' ">
+         	AND HCA.CATEGORY_ID = #{categoryId}
+         </if>
+    </select>
+
     <select id="selectPostList" parameterType="HashMap" resultType="CustomMap">
     	/* dev.hash.hashcord.post.mapper.PostMapper.selectPostList - 게시글 목록조회 */
-        SELECT 	 HP.POST_ID
+        SELECT 	 HCH.CHANEL_NM
+               , HCA.CATEGORY_NM
+               , HP.POST_ID
                , HP.POST_TITLE
                , HP.POST_REG_ID
                , ( SELECT HU.USER_NM FROM HASH_USER HU WHERE HU.USER_ID = HP.POST_REG_ID ) AS POST_REG_NM
@@ -14,13 +33,20 @@
                , DATE(HP.POST_MOD_DT) AS POST_MOD_DT
                , HP.POST_DEL_YN
           FROM HASH_POST HP
-         WHERE POST_DEL_YN = 'N'
+         INNER JOIN HASH_CATEGORY HCA
+        		 ON HP.CATEGORY_ID = HCA.CATEGORY_ID
+         INNER JOIN HASH_CHANEL HCH
+        		 ON HCH.CHANEL_ID = HCA.CHANEL_ID
+         WHERE HP.POST_DEL_YN = 'N'
+         <if test=" chanelId != null and chanelId != '' ">
+         	AND HCH.CHANEL_ID = #{chanelId}
+         </if>
          <if test=" categoryId != null and categoryId != '' ">
-         	AND CATEGORY_ID = #{categoryId}
+         	AND HCA.CATEGORY_ID = #{categoryId}
          </if>
          <if test=" postTitle != null and postTitle != '' ">
-         	AND POST_TITLE LIKE CONCAT('%', #{postTitle}, '%')
-         </if>
+         	AND HP.POST_TITLE LIKE CONCAT('%', #{postTitle}, '%')
+         </if>         
     </select>
 
     <select id="selectPostDetail" parameterType="HashMap" resultType="CustomMap">

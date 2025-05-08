@@ -7,6 +7,13 @@ import java.util.Map;
 
 @Mapper
 public interface PostMapper {
+	
+	/**
+	 * 채널 카테고리 목록조회
+	 * @param params
+	 * @return
+	 */
+	public List<Map<String, Object>> selectChanelCategoryList(Map<String, Object> params);
 
     /**
      * 게시글 목록조회
