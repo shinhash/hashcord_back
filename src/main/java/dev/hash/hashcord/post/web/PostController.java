@@ -19,6 +19,20 @@ public class PostController {
     @Autowired
     private PostService postService;
     
+    
+    /**
+     * 채널 구독자 수 조회
+     * @param params
+     * @param request
+     * @return
+     */
+    @PostMapping("/selectChanelSubScribCnt")
+    public Map<String, Object> selectChanelSubScribCnt(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+        Map<String, Object> resultData = new HashMap<String, Object>();
+        postService.selectChanelSubScribCnt(params, resultData);
+        return resultData;
+    }
+    
     /**
      * 채널 카테고리 목록조회
      * @param params

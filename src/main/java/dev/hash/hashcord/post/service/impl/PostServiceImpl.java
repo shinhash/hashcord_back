@@ -18,6 +18,28 @@ public class PostServiceImpl implements PostService {
     private PostMapper postMapper;
     
     /**
+     * 채널 구독자 수 조회
+     */
+    @Override
+	public Map<String, Object> selectChanelSubScribCnt(Map<String, Object> params, Map<String, Object> resultData) {
+    	int chanelSubScribCnt = 0;
+        String errorCode = "";
+        String errorDetail = "";
+
+        try{
+        	chanelSubScribCnt = postMapper.selectChanelSubScribCnt(params);
+        }catch(Exception exception){
+            errorCode = "CHANEL_SUBSCRIB_CNT_ERROR-001";
+            errorDetail = "채널 구독자 수 조회 실패";
+        }
+
+        resultData.put("resultData", chanelSubScribCnt);
+        resultData.put("errorCode", errorCode);
+        resultData.put("errorDetail", errorDetail);
+        return resultData;
+	}
+    
+    /**
      * 채널 카테고리 목록조회
      */
     @Override

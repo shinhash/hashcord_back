@@ -9,6 +9,13 @@ import java.util.Map;
 public interface PostMapper {
 	
 	/**
+	 * 채널 구독자 수 조회
+	 * @param params
+	 * @return
+	 */
+	public int selectChanelSubScribCnt(Map<String, Object> params);
+	
+	/**
 	 * 채널 카테고리 목록조회
 	 * @param params
 	 * @return

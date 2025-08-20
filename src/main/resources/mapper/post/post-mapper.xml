@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dev.hash.hashcord.post.mapper.PostMapper">
 
+	<select id="selectChanelSubScribCnt" parameterType="HashMap" resultType="int">
+    	/* dev.hash.hashcord.post.mapper.PostMapper.selectChanelSubScribCnt - 채널 구독자 수 조회 */
+        SELECT COUNT(HCS.USER_ID) AS CNT
+          FROM HASH_CHANEL_SUBCRIB HCS
+         WHERE 1 = 1
+         <if test=" chanelId != null and chanelId != '' ">
+         	AND HCS.CHANEL_ID = #{chanelId}
+         </if>
+    </select>
+
 	<select id="selectChanelCategoryList" parameterType="HashMap" resultType="CustomMap">
     	/* dev.hash.hashcord.post.mapper.PostMapper.selectChanelCategoryList - 채널 카테고리 목록조회 */
         SELECT 	 HCH.CHANEL_NM

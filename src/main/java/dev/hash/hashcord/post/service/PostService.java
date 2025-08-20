@@ -6,6 +6,14 @@ public interface PostService {
 	
 	
 	/**
+	 * 채널 구독자 수 조회
+	 * @param params
+	 * @param resultData
+	 * @return
+	 */
+	public Map<String, Object> selectChanelSubScribCnt(Map<String, Object> params, Map<String, Object> resultData);
+	
+	/**
 	 * 채널 카테고리 목록조회
 	 * @param params
 	 * @param resultData
